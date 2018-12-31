@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: List
+metadata:
+  name: custom-jenkins-build
+items:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    labels:
+      build: custom-jenkins-build
+    name: custom-jenkins
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    name: custom-jenkins-build
+  spec:
+    source:
+      git:
+        uri: https://github.com/garethahealy/jenkins-master-s2i.git
+      type: Git
+    strategy:
+      sourceStrategy:
+        from:
+          kind: ImageStreamTag
+          name: jenkins:2
+          namespace: openshift
+      type: Source
+    output:
+      to:
+        kind: ImageStreamTag
+        name: custom-jenkins:latest

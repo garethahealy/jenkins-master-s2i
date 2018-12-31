@@ -1,0 +1,19 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    build: jenkins-build
+  name: jenkins-build-pipeline
+spec:
+  failedBuildsHistoryLimit: 5
+  source:
+    git:
+      uri: https://github.com/garethahealy/jenkins-master-s2i.git
+    type: Git
+    sourceSecret:
+      name: githubauth
+  strategy:
+    jenkinsPipelineStrategy:
+      jenkinsfilePath: Jenkinsfile
+    type: JenkinsPipeline
+  successfulBuildsHistoryLimit: 5
